@@ -71,7 +71,7 @@ export class Participant {
             }
         };
 
-        const taskManager = vscode.chat.createChatParticipant('cookbook', handler);
+        const taskManager = vscode.chat.createChatParticipant('copilot-chef', handler);
 
         context.subscriptions.push(taskManager);
     }

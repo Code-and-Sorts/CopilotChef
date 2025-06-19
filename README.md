@@ -1,14 +1,17 @@
-# VS Code Cookbook
+<div align="center">
+  <img src="images/icon-nobackground.png" alt="Copilot Chef Logo" width="200"/>
+  <h1>Copilot Chef</h1>
+</div>
 
-A collection of useful VS Code extension examples and tools.
+A VS Code extension that turns GitHub Copilot into your personal sous-chef 👨‍🍳—whipping up advanced workflow orchestration, task management, and automation tools. Serve up streamlined AI-assisted development with customizable recipes for your go-to coding dishes.
 
 ## Features
 
-This extension provides several chat participants to help with various tasks:
+This extension provides a chat participant to help with various tasks:
 
-- **Task Manager**: Process XML input to run multiple agents in parallel
+- **Task Manager**: Process JSON input to run multiple agents in parallel
 - **Orchestrator**: Generates tasks from a prompt
-- **Workflow**: Process XML input to run a workflow in sequence with optional approval gates
+- **Workflow**: Process JSON input to run a workflow in sequence with optional approval gates
 
 ## Installation
 
@@ -22,11 +25,11 @@ This extension provides several chat participants to help with various tasks:
 
 ## Usage
 
-Once installed, you can access the Cookbook chat participant in the VS Code chat interface.
+Once installed, you can access the Copilot Chef chat participant in the VS Code chat interface.
 
 ## Requirements
 
-- VS Code 1.101.0 or higher
+- VS Code 1.87.0 or higher
 - GitHub Copilot Chat extension
 
 ## Development
@@ -34,7 +37,7 @@ Once installed, you can access the Cookbook chat participant in the VS Code chat
 1. Clone the repository
 2. Run `yarn` to install dependencies
 3. Run `yarn package` to build the extension
-4. Run `npx @vscode/vsce package --no-yarn` to create the VSIX file
+4. Run `yarn create-vsix` to create the VSIX file
 
 ## License
 

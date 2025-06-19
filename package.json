@@ -3,15 +3,20 @@
   "displayName": "Copilot Chef",
   "description": "A VS Code extension that turns GitHub Copilot into your personal sous-chef 👨‍🍳—whipping up advanced workflow orchestration, task management, and automation tools. Serve up streamlined AI-assisted development with customizable recipes for your go-to coding dishes.",
   "version": "0.0.1",
+  "publisher": "Code and Sorts",
   "repository": {
     "type": "git",
     "url": "https://github.com/Code-and-Sorts/CopilotChef.git"
   },
+  "icon": "images/icon.png",
+  "license": "MIT",
+  "readme": "vscode-readme.md",
   "engines": {
     "vscode": "^1.87.0"
   },
   "categories": [
-    "Other"
+    "AI",
+    "Chat"
   ],
   "activationEvents": [
     "onChatParticipant:copilot-chef"
