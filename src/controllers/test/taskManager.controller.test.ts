@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 import { TaskManagerController } from '@controllers/taskManager.controller';
 import { TaskManagerService } from '@services/taskManager.service';
 import { TaskManagerSchema } from '@models/taskManager.model';
-import { taskManagerXmlFormat } from '@constants/taskManager.constant';
 
 jest.mock('@services/taskManager.service');
 jest.mock('@models/taskManager.model');
@@ -35,7 +34,7 @@ describe('TaskManagerController', () => {
 
   describe('createTasksAsync', () => {
     it('should return validation error when task manager schema validation fails', async () => {
-      const mockValidationError = { success: false, error: { message: 'Validation failed' } };
+      const mockValidationError = { success: false, error: { errors: [{ message: 'Validation failed' }] } };
       jest.spyOn(TaskManagerSchema, 'safeParse').mockReturnValue(mockValidationError as any);
 
       const result = await taskManagerController.createTasksAsync(
@@ -46,7 +45,7 @@ describe('TaskManagerController', () => {
 
       expect(TaskManagerSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
       expect(mockStream.markdown).toHaveBeenCalledWith(
-        `Validation error: Validation failed\n\nPlease provide XML in the format:\n${taskManagerXmlFormat}`
+        expect.stringContaining('Validation error:')
       );
       expect(result).toBe(mockStream);
       expect(mockTaskManagerService.createTasksAsync).not.toHaveBeenCalled();

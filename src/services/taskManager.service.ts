@@ -16,11 +16,11 @@ export class TaskManagerService {
     }
 
     if (tasks.length === 0) {
-        stream.markdown('No tasks were provided in the XML. Please include at least one task.');
+        stream.markdown('No tasks were provided in the JSON. Please include at least one task.');
         return stream;
     }
 
-    stream.markdown('## 🔄 Running multiple agents for tasks based on XML input...\n\n');
+    stream.markdown('## 🔄 Running multiple agents for tasks based on JSON input...\n\n');
 
     const agentPromises = tasks.map(async (task) => {
         try {
@@ -36,7 +36,11 @@ export class TaskManagerService {
                 result += fragment;
             }
 
-            return { name: task.name, prompt: task.prompt, result };
+            return {
+                name: task.name,
+                prompt: task.prompt,
+                result
+            };
         } catch (error) {
             return {
                 name: task.name,

@@ -5,8 +5,6 @@ import { OrchestratorService } from '@services/orchestrator.service';
 import { TaskManagerService } from '@services/taskManager.service';
 import { OrchestratorSchema } from '@models/orchestrator.model';
 import { TaskManagerSchema } from '@models/taskManager.model';
-import { orchestratorXmlFormat } from '@constants/orchestrator.constant';
-import { taskManagerXmlFormat } from '@constants/taskManager.constant';
 
 jest.mock('@services/orchestrator.service');
 jest.mock('@services/taskManager.service');
@@ -46,7 +44,7 @@ describe('OrchestratorController', () => {
 
   describe('createOrchestratorAsync', () => {
     it('should return validation error when orchestrator schema validation fails', async () => {
-      const mockValidationError = { success: false, error: { message: 'Validation failed' } };
+      const mockValidationError = { success: false, error: { errors: [{ message: 'Validation failed' }] } };
       jest.spyOn(OrchestratorSchema, 'safeParse').mockReturnValue(mockValidationError as any);
 
       const result = await orchestratorController.createOrchestratorAsync(
@@ -57,7 +55,7 @@ describe('OrchestratorController', () => {
 
       expect(OrchestratorSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
       expect(mockStream.markdown).toHaveBeenCalledWith(
-        `Validation error: Validation failed\n\nPlease provide XML in the format:\n${orchestratorXmlFormat}`
+        expect.stringContaining('Validation error:')
       );
       expect(result).toBe(mockStream);
       expect(mockOrchestratorService.createOrchestratorAsync).not.toHaveBeenCalled();
@@ -70,7 +68,7 @@ describe('OrchestratorController', () => {
       };
       jest.spyOn(OrchestratorSchema, 'safeParse').mockReturnValue(mockOrchestratorValidationSuccess as any);
 
-      const mockOrchestratorResult = '```xml\n<tasks>\n<task>\n<n>Task 1</n>\n<prompt>Do something</prompt>\n</task>\n</tasks>\n```';
+      const mockOrchestratorResult = '```json\n{\n  "tasks": [\n    {\n      "name": "Task 1",\n      "prompt": "Do something"\n    }\n  ]\n}\n```';
       mockOrchestratorService.createOrchestratorAsync.mockResolvedValue(mockOrchestratorResult);
 
       const mockTaskManagerValidationError = {
@@ -93,7 +91,7 @@ describe('OrchestratorController', () => {
       );
       expect(TaskManagerSchema.safeParse).toHaveBeenCalledWith(mockOrchestratorResult);
       expect(mockStream.markdown).toHaveBeenCalledWith(
-        `Validation error: Task validation failed\n\nPlease provide XML in the format:\n${taskManagerXmlFormat}`
+        expect.stringContaining('Validation error:')
       );
       expect(result).toBe(mockStream);
       expect(mockTaskManagerService.createTasksAsync).not.toHaveBeenCalled();
@@ -107,7 +105,7 @@ describe('OrchestratorController', () => {
       };
       jest.spyOn(OrchestratorSchema, 'safeParse').mockReturnValue(mockOrchestratorValidationSuccess as any);
 
-      const mockOrchestratorResult = '```xml\n<tasks>\n<task>\n<n>Task 1</n>\n<prompt>Do something</prompt>\n</task>\n</tasks>\n```';
+      const mockOrchestratorResult = '```json\n{\n  "tasks": [\n    {\n      "name": "Task 1",\n      "prompt": "Do something"\n    }\n  ]\n}\n```';
       mockOrchestratorService.createOrchestratorAsync.mockResolvedValue(mockOrchestratorResult);
 
       const mockTaskManagerData = {

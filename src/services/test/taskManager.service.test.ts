@@ -60,7 +60,7 @@ describe('TaskManagerService', () => {
       expect(vscode.LanguageModelChatMessage.User).toHaveBeenCalledTimes(2);
       expect(vscode.LanguageModelChatMessage.User).toHaveBeenCalledWith('<system-prompt>System prompt</system-prompt>\n\nTask 1 prompt');
       expect(vscode.LanguageModelChatMessage.User).toHaveBeenCalledWith('<system-prompt>System prompt</system-prompt>\n\nTask 2 prompt');
-      expect(mockStream.markdown).toHaveBeenCalledWith('## 🔄 Running multiple agents for tasks based on XML input...\n\n');
+      expect(mockStream.markdown).toHaveBeenCalledWith('## 🔄 Running multiple agents for tasks based on JSON input...\n\n');
       expect(mockStream.markdown).toHaveBeenCalledWith('## 🔄 Task Results\n\n');
       expect(mockStream.markdown).toHaveBeenCalledWith(expect.stringContaining('### Task 1'));
       expect(mockStream.markdown).toHaveBeenCalledWith(expect.stringContaining('### Task 2'));
@@ -102,7 +102,7 @@ describe('TaskManagerService', () => {
 
       const result = await taskManagerService.createTasksAsync(data, mockStream, mockToken);
 
-      expect(mockStream.markdown).toHaveBeenCalledWith('No tasks were provided in the XML. Please include at least one task.');
+      expect(mockStream.markdown).toHaveBeenCalledWith('No tasks were provided in the JSON. Please include at least one task.');
       expect(result).toBe(mockStream);
     });
 

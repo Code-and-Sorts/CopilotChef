@@ -5,8 +5,6 @@ import { OrchestratorService } from '@services/orchestrator.service';
 import { OrchestratorSchema } from '@models/orchestrator.model';
 import { TaskManagerSchema } from '@models/taskManager.model';
 import { TaskManagerService } from '@services/taskManager.service';
-import { orchestratorXmlFormat } from '@constants/orchestrator.constant';
-import { taskManagerXmlFormat } from '@constants/taskManager.constant';
 
 @injectable()
 export class OrchestratorController {
@@ -23,7 +21,7 @@ export class OrchestratorController {
     const validationResult = OrchestratorSchema.safeParse(request.prompt);
 
     if (!validationResult.success) {
-        stream.markdown(`Validation error: ${validationResult.error.message}\n\nPlease provide XML in the format:\n${orchestratorXmlFormat}`);
+        stream.markdown(`Validation error: ${JSON.stringify(validationResult.error.errors)}\n\nPlease provide your input as text or in JSON format:\n\`\`\`json\n{\n  "prompt": "Your prompt here",\n  "modelType": "gpt-4o"\n}\n\`\`\`\nOr simply type your request after the /orchestrator command.`);
         return stream;
     }
 
@@ -32,7 +30,7 @@ export class OrchestratorController {
     const taskManagerValidationResult = TaskManagerSchema.safeParse(orchestratorResult);
 
     if (!taskManagerValidationResult.success) {
-        stream.markdown(`Validation error: ${taskManagerValidationResult.error.message}\n\nPlease provide XML in the format:\n${taskManagerXmlFormat}`);
+        stream.markdown(`Validation error: ${JSON.stringify(taskManagerValidationResult.error.errors)}\n\nThe orchestrator didn't return a valid task format. Please try again with a more specific request.`);
         return stream;
     }
 

@@ -45,7 +45,7 @@ export class WorkflowService {
             return stream;
         }
 
-        stream.markdown('## 🔄 Running workflow based on XML input...\n\n');
+        stream.markdown('## 🔄 Running workflow based on JSON input...\n\n');
 
         for (const task of tasks) {
             const taskIndex = tasks.indexOf(task);

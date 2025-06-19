@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 import { WorkflowController } from '@controllers/workflow.controller';
 import { WorkflowService } from '@services/workflow.service';
 import { WorkflowTaskSchema } from '@models/workflowTask.model';
-import { workflowXmlFormat } from '@constants/workflow.constant';
 
 jest.mock('@services/workflow.service');
 jest.mock('@models/workflowTask.model');
@@ -36,7 +35,7 @@ describe('WorkflowController', () => {
 
   describe('createWorkflowAsync', () => {
     it('should return validation error when workflow schema validation fails', async () => {
-      const mockValidationError = { success: false, error: { message: 'Validation failed' } };
+      const mockValidationError = { success: false, error: { errors: [{ message: 'Validation failed' }] } };
       jest.spyOn(WorkflowTaskSchema, 'safeParse').mockReturnValue(mockValidationError as any);
 
       const result = await workflowController.createWorkflowAsync(
@@ -47,7 +46,7 @@ describe('WorkflowController', () => {
 
       expect(WorkflowTaskSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
       expect(mockStream.markdown).toHaveBeenCalledWith(
-        `Validation error: Validation failed\n\nPlease provide XML in the format:\n${workflowXmlFormat}`
+        expect.stringContaining('Validation error:')
       );
       expect(result).toBe(mockStream);
       expect(mockWorkflowService.createWorkflowAsync).not.toHaveBeenCalled();

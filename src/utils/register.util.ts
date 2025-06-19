@@ -21,7 +21,7 @@ export class Participant {
             token: vscode.CancellationToken
         ) => {
             if (request.command === Commands.taskManager) {
-                stream.progress('Processing XML and orchestrating agents...');
+                stream.progress('Processing JSON and orchestrating agents...');
                 try {
                     const taskManagerController = container.get(TaskManagerController);
                     return await taskManagerController.createTasksAsync(request, stream, token);
@@ -37,7 +37,7 @@ export class Participant {
 
                 return {};
             } else if (request.command === Commands.orchestrator) {
-                stream.progress('Processing XML and generating tasks...');
+                stream.progress('Processing input and generating tasks...');
                 try {
                     const orchestratorController = container.get(OrchestratorController);
                     return await orchestratorController.createOrchestratorAsync(request, stream, token);
@@ -53,7 +53,7 @@ export class Participant {
 
                 return {};
             } else if (request.command === Commands.workflow) {
-                stream.progress('Processing XML and running workflow...');
+                stream.progress('Processing JSON and running workflow...');
                 try {
                     const workflowController = container.get(WorkflowController);
                     return await workflowController.createWorkflowAsync(request, stream, token);

@@ -1,1 +1,6 @@
-export const orchestratorXmlFormat = `\`\`\`xml\n<prompt>Prompt</prompt>\n\`\`\``;
+export const orchestratorJsonFormat = `\`\`\`json
+{
+  "prompt": "Your prompt here",
+  "modelType": "gpt-4o"
+}
+\`\`\`;

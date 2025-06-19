@@ -75,7 +75,7 @@ describe('WorkflowService', () => {
       expect(vscode.LanguageModelChatMessage.User).toHaveBeenCalledTimes(2);
       expect(vscode.LanguageModelChatMessage.User).toHaveBeenCalledWith('<system-prompt>System prompt</system-prompt>\n\nTask 1 prompt');
       expect(vscode.LanguageModelChatMessage.User).toHaveBeenCalledWith('<system-prompt>System prompt</system-prompt>\n\nTask 2 prompt');
-      expect(mockStream.markdown).toHaveBeenCalledWith('## 🔄 Running workflow based on XML input...\n\n');
+      expect(mockStream.markdown).toHaveBeenCalledWith('## 🔄 Running workflow based on JSON input...\n\n');
       expect(mockStream.markdown).toHaveBeenCalledWith('\n\n🌟 **Workflow completed!**\n\n');
       expect(result).toBe(mockStream);
     });
@@ -108,7 +108,6 @@ describe('WorkflowService', () => {
     });
 
     it('should handle approval gates with approval', async () => {
-      // Mock the waitForApproval method to resolve immediately with true
       jest.spyOn(WorkflowService.prototype as any, 'waitForApproval').mockResolvedValue(true);
 
       const data: WorkflowTaskType = {
@@ -136,7 +135,6 @@ describe('WorkflowService', () => {
     });
 
     it('should handle approval gates with rejection', async () => {
-      // Mock the waitForApproval method to resolve immediately with false
       jest.spyOn(WorkflowService.prototype as any, 'waitForApproval').mockResolvedValue(false);
 
       const data: WorkflowTaskType = {

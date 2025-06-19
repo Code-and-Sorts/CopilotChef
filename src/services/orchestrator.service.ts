@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { OrchestratorType } from '@models/orchestrator.model';
-import { taskManagerXmlFormat } from '@constants/taskManager.constant';
 
 export class OrchestratorService {
   async createOrchestratorAsync(
@@ -23,8 +22,20 @@ export class OrchestratorService {
 
     Task: ${prompt}
 
-    Return your response in this format:
-    ${taskManagerXmlFormat}`;
+    Return your response as valid JSON in this format:
+    {
+      "system": "A system prompt that describes the task and tools",
+      "tasks": [
+        {
+          "name": "Task 1 name",
+          "prompt": "Task 1 detailed description"
+        },
+        {
+          "name": "Task 2 name",
+          "prompt": "Task 2 detailed description"
+        }
+      ]
+    }`;
 
     const messages = [];
 

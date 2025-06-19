@@ -1,1 +1,16 @@
-export const taskManagerXmlFormat = `\`\`\`xml\n<system>Optional system prompt</system>\n<tasks>\n<task>\n<name>Task 1</name>\n<prompt>Task 1 description</prompt>\n<approvalGate>\n<isEnabled>true</isEnabled>\n<message>Task 1 message</message>\n</approvalGate>\n</task>\n<task>\n<name>Task 2</name>\n<prompt>Task 2 description</prompt>\n<approvalGate>\n<isEnabled>true</isEnabled>\n<message>Task 2 message</message>\n</approvalGate>\n</task>\n</tasks>\n\`\`\``;
+export const taskManagerJsonFormat = `\`\`\`json
+{
+  "tasks": [
+    {
+      "name": "Task 1",
+      "prompt": "Task 1 description"
+    },
+    {
+      "name": "Task 2",
+      "prompt": "Task 2 description"
+    }
+  ],
+  "system": "Optional system prompt",
+  "modelType": "gpt-4o"
+}
+\`\`\``;

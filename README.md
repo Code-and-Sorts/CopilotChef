@@ -27,6 +27,52 @@ This extension provides a chat participant to help with various tasks:
 
 Once installed, you can access the Copilot Chef chat participant in the VS Code chat interface.
 
+### Task Manager
+
+Use the Task Manager to run multiple agents in parallel:
+
+```
+@copilot-chef /taskManager {
+  "tasks": [
+    {
+      "name": "Create React component",
+      "description": "Create a reusable button component with different states"
+    },
+    {
+      "name": "Write unit tests",
+      "description": "Create tests for the new button component"
+    }
+  ]
+}
+```
+
+### Orchestrator
+
+Use the Orchestrator to generate tasks from a prompt:
+
+```
+@copilot-chef /orchestrator Generate a complete login page with form validation
+```
+
+### Workflow
+
+Use the Workflow to run a workflow in sequence with optional approval gates:
+
+```
+@copilot-chef /workflow {
+  "tasks": [
+    {
+      "name": "Setup project structure",
+      "prompt": "Create a directory structure for a new React project"
+    },
+    {
+      "name": "Create components",
+      "prompt": "Create React components for the project"
+    }
+  ]
+}
+```
+
 ## Requirements
 
 - VS Code 1.87.0 or higher
