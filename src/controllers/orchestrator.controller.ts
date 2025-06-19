@@ -18,7 +18,15 @@ export class OrchestratorController {
     stream: vscode.ChatResponseStream,
     token: vscode.CancellationToken,
   ) {
-    const validationResult = OrchestratorSchema.safeParse(request.prompt);
+    let promptData;
+    try {
+      promptData = JSON.parse(request.prompt);
+    } catch (error) {
+      stream.markdown(`Error parsing JSON: ${error instanceof Error ? error.message : String(error)}\n\nPlease provide your input as text or in JSON format:\n\`\`\`json\n{\n  "prompt": "Your prompt here",\n  "modelType": "gpt-4o"\n}\n\`\`\`\nOr simply type your request after the /orchestrator command.`);
+      return stream;
+    }
+
+    const validationResult = OrchestratorSchema.safeParse(promptData);
 
     if (!validationResult.success) {
         stream.markdown(`Validation error: ${JSON.stringify(validationResult.error.errors)}\n\nPlease provide your input as text or in JSON format:\n\`\`\`json\n{\n  "prompt": "Your prompt here",\n  "modelType": "gpt-4o"\n}\n\`\`\`\nOr simply type your request after the /orchestrator command.`);
