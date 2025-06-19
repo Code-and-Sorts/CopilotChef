@@ -4,23 +4,23 @@ import { WorkflowTaskType } from '@models/workflowTask.model';
 
 @injectable()
 export class WorkflowService {
-    private approvalResolver: ((value: boolean) => void) | null = null;
+    private static approvalResolver: ((value: boolean) => void) | null = null;
     private static commandsRegistered = false;
 
     constructor() {
         if (!WorkflowService.commandsRegistered) {
             try {
                 vscode.commands.registerCommand('copilotchef.workflow.approveTask', () => {
-                    if (this.approvalResolver) {
-                        this.approvalResolver(true);
-                        this.approvalResolver = null;
+                    if (WorkflowService.approvalResolver) {
+                        WorkflowService.approvalResolver(true);
+                        WorkflowService.approvalResolver = null;
                     }
                 });
 
                 vscode.commands.registerCommand('copilotchef.workflow.rejectTask', () => {
-                    if (this.approvalResolver) {
-                        this.approvalResolver(false);
-                        this.approvalResolver = null;
+                    if (WorkflowService.approvalResolver) {
+                        WorkflowService.approvalResolver(false);
+                        WorkflowService.approvalResolver = null;
                     }
                 });
 
@@ -64,12 +64,12 @@ export class WorkflowService {
                 stream.markdown(`\n\n## Approval Required\n\n${approvalMessage}`);
 
                 stream.button({
-                    command: 'workflow.approveTask',
+                    command: 'copilotchef.workflow.approveTask',
                     title: '✅ Yes'
                 });
 
                 stream.button({
-                    command: 'workflow.rejectTask',
+                    command: 'copilotchef.workflow.rejectTask',
                     title: '❌ No'
                 });
 
@@ -89,7 +89,7 @@ export class WorkflowService {
 
     private waitForApproval(): Promise<boolean> {
         return new Promise<boolean>((resolve) => {
-            this.approvalResolver = resolve;
+            WorkflowService.approvalResolver = resolve;
         });
     }
 }
