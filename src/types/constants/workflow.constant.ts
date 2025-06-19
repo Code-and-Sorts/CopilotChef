@@ -20,4 +20,4 @@ export const workflowJsonFormat = `\`\`\`json
   ],
   "system": "Optional system prompt"
 }
-\`\`\`;
+\`\`\``;

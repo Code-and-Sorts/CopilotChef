@@ -10,7 +10,7 @@ export const WorkflowTaskSchema = z.object({
             isEnabled: z.boolean().default(false),
             message: z.string().optional(),
         }).optional(),
-    })),
+    })).min(1, 'At least one task is required'),
 });
 
 export type WorkflowTaskType = z.infer<typeof WorkflowTaskSchema>;

@@ -36,11 +36,11 @@ Use the Task Manager to run multiple agents in parallel:
   "tasks": [
     {
       "name": "Create React component",
-      "description": "Create a reusable button component with different states"
+      "prompt": "Create a reusable button component with different states"
     },
     {
       "name": "Write unit tests",
-      "description": "Create tests for the new button component"
+      "prompt": "Create tests for the new button component"
     }
   ]
 }

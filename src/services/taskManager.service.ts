@@ -20,6 +20,7 @@ export class TaskManagerService {
         return stream;
     }
 
+    stream.markdown('## 🧑‍🍳 Lets start cooking! 🍳\n\n');
     stream.markdown('## 🔄 Running multiple agents for tasks based on JSON input...\n\n');
 
     const agentPromises = tasks.map(async (task) => {

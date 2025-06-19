@@ -45,6 +45,7 @@ export class WorkflowService {
             return stream;
         }
 
+        stream.markdown('## 🧑‍🍳 Lets start cooking! 🍳\n\n');
         stream.markdown('## 🔄 Running workflow based on JSON input...\n\n');
 
         for (const task of tasks) {

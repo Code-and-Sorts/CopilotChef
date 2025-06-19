@@ -39,6 +39,7 @@ export class OrchestratorService {
 
     const messages = [];
 
+    stream.markdown('## 🧑‍🍳 Lets start cooking! 🍳\n\n');
     stream.markdown('## 🔄 Generating tasks...\n\n');
 
     messages.push(vscode.LanguageModelChatMessage.User(taskPrompt));
