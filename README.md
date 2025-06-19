@@ -13,6 +13,13 @@ This extension provides a chat participant to help with various tasks:
 - **Orchestrator**: Generates tasks from a prompt
 - **Workflow**: Process JSON input to run a workflow in sequence with optional approval gates
 
+
+## See it in action
+
+Here is an example of running the task manager (12 tasks) that get run in parallel. All these tasks are being run in parallel, so that run pretty quickly.
+
+![Task Manager Example](images/taskmanager-example.gif)
+
 ## Installation
 
 1. Download the VSIX file from the releases page
@@ -36,7 +43,7 @@ Use the Task Manager to run multiple agents in parallel:
   "tasks": [
     {
       "name": "Create React component",
-      "prompt": "Create a reusable button component with different states"
+      "prompt": "Create a React reusable button component with different states"
     },
     {
       "name": "Write unit tests",
