@@ -10,14 +10,14 @@ export class WorkflowService {
     constructor() {
         if (!WorkflowService.commandsRegistered) {
             try {
-                vscode.commands.registerCommand('workflow.approveTask', () => {
+                vscode.commands.registerCommand('copilotchef.workflow.approveTask', () => {
                     if (this.approvalResolver) {
                         this.approvalResolver(true);
                         this.approvalResolver = null;
                     }
                 });
 
-                vscode.commands.registerCommand('workflow.rejectTask', () => {
+                vscode.commands.registerCommand('copilotchef.workflow.rejectTask', () => {
                     if (this.approvalResolver) {
                         this.approvalResolver(false);
                         this.approvalResolver = null;

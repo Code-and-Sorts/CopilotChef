@@ -1,6 +1,15 @@
 import * as vscode from 'vscode';
 import { OrchestratorType } from '@models/orchestrator.model';
 
+function cleanJsonString(jsonString: string) {
+  let cleaned = jsonString.replace(/```json\s*/g, '');
+  cleaned = cleaned.replace(/```\s*$/g, '');
+
+  cleaned = cleaned.trim();
+
+  return cleaned;
+}
+
 export class OrchestratorService {
   async createOrchestratorAsync(
     data: OrchestratorType,
@@ -54,6 +63,11 @@ export class OrchestratorService {
         resultString += fragment;
     }
 
-    return resultString;
+    try {
+      return JSON.parse(cleanJsonString(resultString));
+    } catch (error) {
+      stream.markdown(`Error parsing JSON response: ${error instanceof Error ? error.message : String(error)}`);
+      throw new Error('Failed to parse JSON response from language model');
+    }
   }
 }

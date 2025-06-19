@@ -73,7 +73,11 @@ Use the Workflow to run a workflow in sequence with optional approval gates:
   "tasks": [
     {
       "name": "Setup project structure",
-      "prompt": "Create a directory structure for a new React project"
+      "prompt": "Create a directory structure for a new React project",
+      "approvalGate": {
+        "isEnabled": true,
+        "message": "Would you like to continue to create the components?"
+      }
     },
     {
       "name": "Create components",
