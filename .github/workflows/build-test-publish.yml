@@ -1,0 +1,70 @@
+name: Build, Test, and Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Type check
+        run: yarn check-types
+
+      - name: Run unit tests
+        run: yarn test:unit
+
+      - name: Package extension
+        run: yarn package
+
+      - name: Create VSIX
+        run: yarn vsce package
+
+      - name: Upload VSIX as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cookbook-extension
+          path: "*.vsix"
+          retention-days: 7
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cookbook-extension
+
+      - name: Get VSIX filename
+        id: get-vsix
+        run: |
+          echo "VSIX_PATH=$(ls *.vsix)" >> $GITHUB_OUTPUT
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.get-vsix.outputs.VSIX_PATH }}
+          name: Release ${{ steps.get-vsix.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true

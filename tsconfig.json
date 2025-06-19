@@ -1,0 +1,30 @@
+{
+	"compilerOptions": {
+		"module": "Node16",
+		"target": "ES2022",
+		"lib": [
+			"ES2022",
+			"dom"
+		],
+		"sourceMap": true,
+		"rootDir": "src",
+		"baseUrl": ".",
+		"strict": true,
+		"jsx": "react",
+		"jsxFactory": "vscpp",
+		"jsxFragmentFactory": "vscppf",
+		"types": ["node", "vscode", "jest"],
+		"skipLibCheck": true,
+		"experimentalDecorators": true,
+		"isolatedModules": true,
+		"paths": {
+			"@controllers/*": ["src/controllers/*"],
+			"@services/*": ["src/services/*"],
+			"@models/*": ["src/types/models/*"],
+			"@types/*": ["src/types/*"],
+			"@utils/*": ["src/utils/*"],
+			"@config/*": ["src/config/inversify.config.ts"],
+			"@constants/*": ["src/types/constants/*"]
+		}
+	},
+}

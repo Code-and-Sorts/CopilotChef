@@ -1,0 +1,86 @@
+{
+  "name": "copilot-chef",
+  "displayName": "Copilot Chef",
+  "description": "A VS Code extension that enhances GitHub Copilot with advanced workflow orchestration, task management, and automation tools. Streamline your AI-assisted development process with customizable recipes for common coding patterns and workflows.",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Code-and-Sorts/CopilotChef.git"
+  },
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onChatParticipant:copilot-chef"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "copilot-chef",
+        "fullName": "Copilot Chef",
+        "name": "copilot-chef",
+        "description": "A VS Code extension that enhances GitHub Copilot with advanced workflow orchestration, task management, and automation tools. Streamline your AI-assisted development process with customizable recipes for common coding patterns and workflows.",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "taskManager",
+            "description": "Process JSON input to run multiple agents in parallel"
+          },
+          {
+            "name": "orchestrator",
+            "description": "Generates tasks from a prompt"
+          },
+          {
+            "name": "workflow",
+            "description": "Process JSON input to run a workflow in sequence with optional approval gates"
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "yarn run check-types && yarn run lint && node esbuild.js",
+    "watch": "yarn watch:esbuild & yarn watch:tsc",
+    "watch:esbuild": "NODE_NO_WARNINGS=1 node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "yarn run check-types && yarn run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "vscode-test",
+    "test:unit": "jest",
+    "create-vsix": "yarn package && npx @vscode/vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.3",
+    "@types/vscode": "^1.101.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.5.0",
+    "esbuild": "^0.25.3",
+    "eslint": "^9.25.1",
+    "jest": "^30.0.0",
+    "npm-run-all": "^4.1.5",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@inversifyjs/core": "^5.3.1",
+    "fast-xml-parser": "^5.2.5",
+    "inversify": "^7.5.2",
+    "reflect-metadata": "^0.2.2",
+    "zod": "^3.25.64"
+  },
+  "packageManager": "yarn@4.9.2"
+}
