@@ -16,9 +16,23 @@ This extension provides a chat participant to help with various tasks:
 
 ## 🎬 See it in Action
 
-Here is an example of running the task manager (12 tasks) that get run in parallel. All these tasks are being run in parallel, so that run pretty quickly.
+### Running tasks in parallel with task manager
+
+Below an example of running the task manager (12 tasks) that get run in parallel. All these tasks are being run in parallel, so that run pretty quickly.
 
 ![Task Manager Example](images/taskmanager-example.gif)
+
+### Creating an orchestration to separate a prompt into tasks and run them in parallel with the orchestrator
+
+The example below illustrates how you can use the orchestrator to take a single prompt, have it get broken down into subtasks and then have it run the task manager.
+
+![Orchestrator Example](images/orchestrator-example.gif)
+
+### Creating approval with workflow
+
+The example below highlights how to create approval workflows that can have optional approval gates in them.
+
+![Approval Workflow Example](images/workflow-example.gif)
 
 ## 📦 Installation
 
