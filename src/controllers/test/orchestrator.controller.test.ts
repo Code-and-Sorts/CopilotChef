@@ -18,6 +18,7 @@ describe('OrchestratorController', () => {
   let mockRequest: vscode.ChatRequest;
   let mockStream: vscode.ChatResponseStream;
   let mockToken: vscode.CancellationToken;
+  let mockParsedPrompt: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -35,7 +36,8 @@ describe('OrchestratorController', () => {
       mockTaskManagerService
     );
 
-    mockRequest = { prompt: 'test prompt' } as vscode.ChatRequest;
+    mockParsedPrompt = { prompt: 'test prompt' };
+    mockRequest = { prompt: JSON.stringify(mockParsedPrompt) } as vscode.ChatRequest;
     mockStream = {
       markdown: jest.fn().mockReturnThis(),
     } as unknown as jest.Mocked<vscode.ChatResponseStream>;
@@ -53,7 +55,7 @@ describe('OrchestratorController', () => {
         mockToken
       );
 
-      expect(OrchestratorSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
+      expect(OrchestratorSchema.safeParse).toHaveBeenCalledWith(mockParsedPrompt);
       expect(mockStream.markdown).toHaveBeenCalledWith(
         expect.stringContaining('Validation error:')
       );
@@ -73,7 +75,7 @@ describe('OrchestratorController', () => {
 
       const mockTaskManagerValidationError = {
         success: false,
-        error: { message: 'Task validation failed' }
+        error: { message: 'Task validation failed', errors: [{ message: 'Task validation failed' }] }
       };
       jest.spyOn(TaskManagerSchema, 'safeParse').mockReturnValue(mockTaskManagerValidationError as any);
 
@@ -83,7 +85,7 @@ describe('OrchestratorController', () => {
         mockToken
       );
 
-      expect(OrchestratorSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
+      expect(OrchestratorSchema.safeParse).toHaveBeenCalledWith(mockParsedPrompt);
       expect(mockOrchestratorService.createOrchestratorAsync).toHaveBeenCalledWith(
         mockOrchestratorValidationSuccess.data,
         mockStream,
@@ -126,7 +128,7 @@ describe('OrchestratorController', () => {
         mockToken
       );
 
-      expect(OrchestratorSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
+      expect(OrchestratorSchema.safeParse).toHaveBeenCalledWith(mockParsedPrompt);
       expect(mockOrchestratorService.createOrchestratorAsync).toHaveBeenCalledWith(
         mockOrchestratorData,
         mockStream,
@@ -139,6 +141,22 @@ describe('OrchestratorController', () => {
         mockToken
       );
       expect(result).toBe(mockTaskManagerResult);
+    });
+
+    it('should handle JSON parse errors', async () => {
+      const invalidJsonRequest = { prompt: 'invalid json' } as vscode.ChatRequest;
+
+      const result = await orchestratorController.createOrchestratorAsync(
+        invalidJsonRequest,
+        mockStream,
+        mockToken
+      );
+
+      expect(mockStream.markdown).toHaveBeenCalledWith(
+        expect.stringContaining('Error parsing JSON:')
+      );
+      expect(result).toBe(mockStream);
+      expect(OrchestratorSchema.safeParse).not.toHaveBeenCalled();
     });
   });
 });

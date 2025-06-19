@@ -13,6 +13,7 @@ describe('TaskManagerController', () => {
   let mockRequest: vscode.ChatRequest;
   let mockStream: vscode.ChatResponseStream;
   let mockToken: vscode.CancellationToken;
+  let mockParsedPrompt: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -25,7 +26,8 @@ describe('TaskManagerController', () => {
       mockTaskManagerService
     );
 
-    mockRequest = { prompt: 'test prompt' } as vscode.ChatRequest;
+    mockParsedPrompt = { tasks: [{ name: 'Task 1', prompt: 'test prompt' }] };
+    mockRequest = { prompt: JSON.stringify(mockParsedPrompt) } as vscode.ChatRequest;
     mockStream = {
       markdown: jest.fn().mockReturnThis(),
     } as unknown as jest.Mocked<vscode.ChatResponseStream>;
@@ -43,7 +45,7 @@ describe('TaskManagerController', () => {
         mockToken
       );
 
-      expect(TaskManagerSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
+      expect(TaskManagerSchema.safeParse).toHaveBeenCalledWith(mockParsedPrompt);
       expect(mockStream.markdown).toHaveBeenCalledWith(
         expect.stringContaining('Validation error:')
       );
@@ -70,13 +72,29 @@ describe('TaskManagerController', () => {
         mockToken
       );
 
-      expect(TaskManagerSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
+      expect(TaskManagerSchema.safeParse).toHaveBeenCalledWith(mockParsedPrompt);
       expect(mockTaskManagerService.createTasksAsync).toHaveBeenCalledWith(
         mockTaskManagerData,
         mockStream,
         mockToken
       );
       expect(result).toBe(mockServiceResult);
+    });
+
+    it('should handle JSON parse errors', async () => {
+      const invalidJsonRequest = { prompt: 'invalid json' } as vscode.ChatRequest;
+
+      const result = await taskManagerController.createTasksAsync(
+        invalidJsonRequest,
+        mockStream,
+        mockToken
+      );
+
+      expect(mockStream.markdown).toHaveBeenCalledWith(
+        expect.stringContaining('Error parsing JSON:')
+      );
+      expect(result).toBe(mockStream);
+      expect(TaskManagerSchema.safeParse).not.toHaveBeenCalled();
     });
   });
 });

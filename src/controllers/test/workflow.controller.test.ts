@@ -13,6 +13,7 @@ describe('WorkflowController', () => {
   let mockRequest: vscode.ChatRequest;
   let mockStream: vscode.ChatResponseStream;
   let mockToken: vscode.CancellationToken;
+  let mockParsedPrompt: any;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -25,7 +26,8 @@ describe('WorkflowController', () => {
       mockWorkflowService
     );
 
-    mockRequest = { prompt: 'test prompt' } as vscode.ChatRequest;
+    mockParsedPrompt = { tasks: [{ name: 'Task 1', prompt: 'test prompt' }] };
+    mockRequest = { prompt: JSON.stringify(mockParsedPrompt) } as vscode.ChatRequest;
     mockStream = {
       markdown: jest.fn().mockReturnThis(),
       button: jest.fn().mockReturnThis(),
@@ -44,7 +46,7 @@ describe('WorkflowController', () => {
         mockToken
       );
 
-      expect(WorkflowTaskSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
+      expect(WorkflowTaskSchema.safeParse).toHaveBeenCalledWith(mockParsedPrompt);
       expect(mockStream.markdown).toHaveBeenCalledWith(
         expect.stringContaining('Validation error:')
       );
@@ -80,13 +82,29 @@ describe('WorkflowController', () => {
         mockToken
       );
 
-      expect(WorkflowTaskSchema.safeParse).toHaveBeenCalledWith(mockRequest.prompt);
+      expect(WorkflowTaskSchema.safeParse).toHaveBeenCalledWith(mockParsedPrompt);
       expect(mockWorkflowService.createWorkflowAsync).toHaveBeenCalledWith(
         mockWorkflowData,
         mockStream,
         mockToken
       );
       expect(result).toBe(mockServiceResult);
+    });
+
+    it('should handle JSON parse errors', async () => {
+      const invalidJsonRequest = { prompt: 'invalid json' } as vscode.ChatRequest;
+
+      const result = await workflowController.createWorkflowAsync(
+        invalidJsonRequest,
+        mockStream,
+        mockToken
+      );
+
+      expect(mockStream.markdown).toHaveBeenCalledWith(
+        expect.stringContaining('Error parsing JSON:')
+      );
+      expect(result).toBe(mockStream);
+      expect(WorkflowTaskSchema.safeParse).not.toHaveBeenCalled();
     });
   });
 });
