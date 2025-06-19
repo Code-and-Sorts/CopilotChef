@@ -5,7 +5,7 @@
 
 A VS Code extension that turns GitHub Copilot into your personal sous-chef 👨‍🍳—whipping up advanced workflow orchestration, task management, and automation tools. Serve up streamlined AI-assisted development with customizable recipes for your go-to coding dishes.
 
-## Features
+## ✨ Features
 
 This extension provides a chat participant to help with various tasks:
 
@@ -14,13 +14,13 @@ This extension provides a chat participant to help with various tasks:
 - **Workflow**: Process JSON input to run a workflow in sequence with optional approval gates
 
 
-## See it in action
+## 🎬 See it in Action
 
 Here is an example of running the task manager (12 tasks) that get run in parallel. All these tasks are being run in parallel, so that run pretty quickly.
 
 ![Task Manager Example](images/taskmanager-example.gif)
 
-## Installation
+## 📦 Installation
 
 1. Download the VSIX file from the releases page
 2. Install it in VS Code:
@@ -30,11 +30,11 @@ Here is an example of running the task manager (12 tasks) that get run in parall
    - Select "Install from VSIX..."
    - Choose the downloaded VSIX file
 
-## Usage
+## 🚀 Usage
 
 Once installed, you can access the Copilot Chef chat participant in the VS Code chat interface.
 
-### Task Manager
+### 📋 Task Manager
 
 Use the Task Manager to run multiple agents in parallel:
 
@@ -53,15 +53,18 @@ Use the Task Manager to run multiple agents in parallel:
 }
 ```
 
-### Orchestrator
+### 🎮 Orchestrator
 
 Use the Orchestrator to generate tasks from a prompt:
 
 ```
-@copilot-chef /orchestrator Generate a complete login page with form validation
+@copilot-chef /orchestrator {
+  "prompt": "Generate a complete login page with form validation",
+  "modelType": "gpt-4o"
+}
 ```
 
-### Workflow
+### ⚙️ Workflow
 
 Use the Workflow to run a workflow in sequence with optional approval gates:
 
@@ -80,18 +83,18 @@ Use the Workflow to run a workflow in sequence with optional approval gates:
 }
 ```
 
-## Requirements
+## 🔍 Requirements
 
 - VS Code 1.87.0 or higher
 - GitHub Copilot Chat extension
 
-## Development
+## 💻 Development
 
 1. Clone the repository
 2. Run `yarn` to install dependencies
 3. Run `yarn package` to build the extension
 4. Run `yarn create-vsix` to create the VSIX file
 
-## License
+## 📄 License
 
 MIT
